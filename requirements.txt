@@ -1,2 +1,4 @@
+numpy
+scipy
 torch==2.0.1
-torch-linear-assignment
+git+https://github.com/ivan-chai/torch-linear-assignment.git

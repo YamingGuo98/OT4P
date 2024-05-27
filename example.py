@@ -9,6 +9,9 @@ We use OT4P to solve the above problem from three different perspectives:
 deterministic optimization, stochastic optimization, and constrained optimization.
 """
 
+import torch
+from src.ot4p import OT4P
+
 def loss_fn(Y, X, P):
     """
     Compute the loss function.
@@ -64,7 +67,7 @@ def train_model(X, Y, model, optimizer, weightP, log_weightP_var=None, max_iter=
         # Print training and validation losses
         print(f"Iteration {i+1}: Training Loss = {loss_train.item():.6f}, Validation Loss = {loss_val.item():.6f}")
 
-        # Update base of the model
+        # Update base to handle boundary issues
         model.update_base(weightP)
 
         # Determine optimization type
@@ -79,28 +82,31 @@ def train_model(X, Y, model, optimizer, weightP, log_weightP_var=None, max_iter=
             break
 
 def main():
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    print(f"The code is running on {device}")
+
     size = 100
-    X = torch.randn(size, size)
-    trueP = torch.eye(size)[torch.randperm(size)]
+    X = torch.randn(size, size, device=device)
+    trueP = torch.eye(size, device=device)[torch.randperm(size)]
     Y = trueP @ X @ trueP.T
 
     # Deterministic optimization
-    weightP = torch.nn.Parameter(torch.randn(size, size), requires_grad=True)
-    model = OT4P(size)
+    weightP = torch.nn.Parameter(torch.randn(size, size, device=device), requires_grad=True)
+    model = OT4P(size).to(device)
     optimizer = torch.optim.AdamW([weightP], lr=1e-1)
     print("Starting Deterministic Optimization...")
     train_model(X, Y, model, optimizer, weightP, log_weightP_var=None)
 
     # Stochastic optimization
-    weightP = torch.nn.Parameter(torch.randn(size, size), requires_grad=True)
-    log_weightP_var = torch.nn.Parameter(torch.randn(size, size), requires_grad=True)
-    model = OT4P(size)
+    weightP = torch.nn.Parameter(torch.randn(size, size, device=device), requires_grad=True)
+    log_weightP_var = torch.nn.Parameter(torch.randn(size, size, device=device), requires_grad=True)
+    model = OT4P(size).to(device)
     optimizer = torch.optim.AdamW([weightP], lr=1e-1)
     print("Starting Stochastic Optimization...")
     train_model(X, Y, model, optimizer, weightP, log_weightP_var=log_weightP_var)
 
     # Constrained optimization
-    constraint_matrix = torch.ones((size, size))
+    constraint_matrix = torch.ones((size, size), device=device)
     num_selected = int(size * 0.05)
     selected_rows = torch.randperm(size)[:num_selected]
     for row in selected_rows:
@@ -109,8 +115,8 @@ def main():
         constraint_matrix[:, col_index] = 0
         constraint_matrix[row, col_index] = 1
 
-    weightP = torch.nn.Parameter(torch.randn(size, size), requires_grad=True)
-    model = OT4P(size)
+    weightP = torch.nn.Parameter(torch.randn(size, size, device=device), requires_grad=True)
+    model = OT4P(size).to(device)
     model.constraint = constraint_matrix.unsqueeze(0)
     optimizer = torch.optim.AdamW([weightP], lr=1e-1)
     print("Starting Constrained Optimization...")
@@ -118,6 +124,4 @@ def main():
 
 
 if __name__ == "__main__":
-    import torch
-    from src.ot4p import OT4P
     main()
