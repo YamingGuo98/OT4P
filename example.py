@@ -1,10 +1,10 @@
 """
 OT4P Demonstration
 
-We provide a minimal example demonstrating the use of OT4P. Given X and Y = PXP^T, 
-where P is a permutation matrix, the objective is to find the true permutation matrix P, 
-which is defined as:
-min_P ||PXP^T - Y||^2.
+We provide a minimal example demonstrating the use of OT4P. Given X and Y = PXP^{\top}, 
+where P is a permutation matrix, the objective is to find the true permutation matrix P.
+This problem can be defined as:
+\min_P ||PXP^{\top} - Y||^2.
 We use OT4P to solve the above problem from three different perspectives:
 deterministic optimization, stochastic optimization, and constrained optimization.
 """

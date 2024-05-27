@@ -1,6 +1,6 @@
 # OT4P: Unlocking Effective Orthogonal Group Path for Permutation Relaxation
 
-The repository is a PyTorch implementation of OT4P (Orthogonal Group-based Transformation for Permutation Relaxation), a differentiable transformation for relaxing permutation matrices onto the orthogonal group. We provide a minimal example demonstrating the use of OT4P. The rest of the of the code from the paper is being prepared.
+The repository is a PyTorch implementation of OT4P (Orthogonal Group-based Transformation for Permutation Relaxation), a differentiable transformation for relaxing permutation matrices onto the orthogonal group. We provide a minimal example demonstrating the use of OT4P. The rest of the code from the paper is being prepared.
 
 ## Requirements
 
@@ -11,7 +11,7 @@ We use Python version `3.10`, PyTorch version `2.01`, and CUDA version `11.7`. O
 We provide a minimal example (`example.py` or `example.ipynb`) demonstrating the use of OT4P.  Given $X$ and $Y = PXP^{\top}$, where $P$ is a permutation matrix, the objective is to find the true permutation matrix $P$. This problem can be defined as:
 
 $$
-\min_P \|PXP^{\top} - Y\|^2.
+\min_P ||PXP^{\top} - Y||^2.
 $$
 
 We use OT4P to solve this problem from three different perspectives:
