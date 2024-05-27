@@ -1,5 +1,5 @@
 """
-OT4P Demonstration
+A minimal example demonstrating the use of OT4P
 
 We provide a minimal example demonstrating the use of OT4P. Given X and Y = PXP^{\top}, 
 where P is a permutation matrix, the objective is to find the true permutation matrix P.
