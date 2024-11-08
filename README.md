@@ -8,8 +8,9 @@ Our implementation relies on [torch-linear-assignment](https://github.com/ivan-c
 
 ## Minimal example
 We provide a minimal example (`example.py` or `example.ipynb`) to illustrate the use of OT4P. Given matrices $X$ and $Y = PXP^{\top}$, where $P$ is the true permutation matrix, the objective is to find the true permutation matrix $P$ using only $X$ and $Y$. This problem can be formulated as follows:
+
 $$
-\min_P ||PXP^{\top} - Y||_{\mathrm{F}}^2.
+\min_P \\|PXP^{\top} - Y\\|_{\mathrm{F}}^2.
 $$
 
 We use OT4P to solve this problem from three different perspectives:
